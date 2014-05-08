@@ -23,20 +23,20 @@ public class MyJFrame extends JFrame {
 
 	private static final int free=0;
 	public JPanel bgjp;
-	public  JTextPane jp;
+	public JTextPane jp;
 	public JButton but_confirm;
 	public JButton but_stop;
 	public JButton but_reset;
-	public Disk disk;
+	public Disk disk;	
+	public Timer timer;
 	
-	private Timer timer;
 	private controller timelistener;
 	private static  ArrayList<Logicmemory> mmlist=new ArrayList<>();
 	
 	public MyJFrame(Disk disk) {
 		this.disk=disk;
 
-		setTitle("内存管理");
+		setTitle("请求调页存储管理方式模拟 王源铭达");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 200, 800, 350);
 		setLayout(null);

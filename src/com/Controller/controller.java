@@ -24,7 +24,9 @@ public class controller implements ActionListener {
 	static final int change_in=1;
 	static final int change_out=2;
 	
-	private  JTextPane jp;	
+	private int timer=0;
+	private int lostcount=0;
+	private JTextPane jp;	
 	private Instruction newinsInstruction=new Instruction();
 	private Disk disk;
 	private ArrayList<Logicmemory> mmlist=new ArrayList<>();
@@ -78,12 +80,17 @@ public class controller implements ActionListener {
 		for(int i=0;i<mmlist.size();i++){
 			Logicmemory temp=new Logicmemory();
 			temp=mmlist.get(i);
+			int kuai=i+1;
 			if(temp.nowpage==FIFO[head]){
 				temp.nowpage=0;
-				jp.setText(jp.getText()+"第"+i+"块"+"换出"+FIFO[head]+"页"+"\n");
-				System.out.println("第"+i+"块"+"换出"+FIFO[head]+"页");
+				jp.setText(jp.getText()+"第"+kuai+"块"+"换出"+FIFO[head]+"页"+"\n");
+				System.out.println("第"+kuai+"块"+"换出"+FIFO[head]+"页");
 				
 				head++;
+				Memory mm=(Memory) frame.bgjp.getComponent(kuai+4);
+				mm.color=1;
+				frame.repaint();
+				return;
 			}
 		
 		}
@@ -102,17 +109,24 @@ public class controller implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		//默认第一条指令是开始指令，先算当前情况
+		timer++;
+		if(timer==361){
+			frame.timer.stop();
+			jp.setText(jp.getText()+"缺页数"+lostcount+"\n");
+			System.out.println("缺页数"+lostcount);
+		}
 		switch(condition)
 		{
 		case check:{
 		newinsInstruction=disk.list.get(next);
 		next=newinsInstruction.next-1;
-		jp.setText(jp.getText()+"当前是"+newinsInstruction.order+"号"+newinsInstruction.page+"页"+"\n");
+		int show=next+1;
+		jp.setText(jp.getText()+"当前是"+newinsInstruction.order+"号"+newinsInstruction.page+"页"+"指向"+show+"号\n");
 		System.out.println("当前是"+newinsInstruction.order+"号"+newinsInstruction.page+"页");
 		if((!findpage(newinsInstruction.page))){
 			FIFO[tail]=newinsInstruction.page;		 		
 			tail++;
-			if(tail-head<4){
+			if(tail-head<5){
 				//如果没满，就直接放到空地
 				
 				int emptyplace;
@@ -124,6 +138,7 @@ public class controller implements ActionListener {
 				jp.setText(jp.getText()+"第"+emptyplace+"块调入"+temp.nowpage+"页"+"\n");
 				Memory mm=(Memory) frame.bgjp.getComponent(emptyplace+4);
 				mm.color=0;
+				lostcount++;
 				frame.repaint();
 				
 				condition=check;
@@ -141,15 +156,21 @@ public class controller implements ActionListener {
 		case change_in:{
 			int emptyplace;
 			emptyplace=findplace();
-			temp=mmlist.get(emptyplace);
+			temp=mmlist.get(emptyplace-1);
 			temp.nowpage=FIFO[tail-1];
 			jp.setText(jp.getText()+"第"+emptyplace+"块调入"+temp.nowpage+"页"+"\n");
 			System.out.println("第"+emptyplace+"块调入"+temp.nowpage+"页");
+			Memory mm=(Memory) frame.bgjp.getComponent(emptyplace+4);
+			mm.color=0;
+			lostcount++;
+			frame.repaint();
 			condition=check;
+			break;
 		}
 		case change_out:{
 			replace();
 			condition=change_in;
+			break;
 		}
 		}
 		
