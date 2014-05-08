@@ -14,26 +14,15 @@ import com.Interface.Memory;
 import com.Interface.MyJFrame;
 
 public class main {
-	private static  ArrayList<Logicmemory> mmlist=new ArrayList<>();
-	private static Timer timer;
 
 	
 	public static void main(String[] args) {
-		Disk disk=new Disk();
+		Disk disk=new Disk("E:\\123.txt");
 
-		MyJFrame frame=new MyJFrame();
-			
-		for(int i=1;i<=4;i++){
-			Logicmemory lm=new Logicmemory();
-			Memory mem=new Memory("µÚ"+i+"¿é", i);
-			frame.bgjp.add(mem);
-			mmlist.add(lm);
-		}
+		MyJFrame frame=new MyJFrame(disk);
 		
-		
-		ActionListener timelistener = new controller(disk,mmlist,frame);
-		timer = new Timer(1500, timelistener);
-		timer.start();
+				
+
 		frame.setVisible(true);
 	}
 }

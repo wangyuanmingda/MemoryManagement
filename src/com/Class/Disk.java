@@ -7,15 +7,15 @@ import java.util.ArrayList;
 public class Disk {
 	public ArrayList<Instruction> list=new ArrayList<>();
 	private int count=0,page=1;
-	public Disk() {
-		readInstruction();
+	public Disk(String file) {
+		readInstruction(file);
 	}
 	//读入指令
-	private void readInstruction() {
+	private void readInstruction(String file) {
 		String s;
 	try { 
 		
-		BufferedReader input = new BufferedReader(new FileReader("E:\\123.txt")); //读取流
+		BufferedReader input = new BufferedReader(new FileReader(file)); //读取流
 
 		while((s = input.readLine())!=null){ //判断是否读到了最后一行
 		String info[] = s.split(" ");

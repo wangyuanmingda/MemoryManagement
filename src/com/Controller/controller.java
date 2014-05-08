@@ -24,7 +24,7 @@ public class controller implements ActionListener {
 	private Disk disk;
 	private ArrayList<Logicmemory> mmlist=new ArrayList<>();
 	private int head=0,tail=0;
-	private int next;
+	private int next=0;
 	private int[] FIFO=new int[400];
 	private int condition;
 	static final int check=0;
@@ -40,19 +40,19 @@ public class controller implements ActionListener {
 
 		
 		
-		newinsInstruction=disk.list.get(0);
-		next=newinsInstruction.next-1;
-		FIFO[tail]=newinsInstruction.page;
-		System.out.println("当前是"+newinsInstruction.page+"页");
-		jp.setText("当前是"+newinsInstruction.page+"页"+"\n");
-		Logicmemory temp=new Logicmemory();
-		temp=mmlist.get(0);
-		temp.nowpage=FIFO[tail];
-    	Memory jh=(Memory) frame.bgjp.getComponent(4);
-    	jh.color=0;
-    	frame.repaint();
-	//	frame.bgjp.getComponent(0).getGraphics();
-		tail++;
+//		newinsInstruction=disk.list.get(0);
+//		next=newinsInstruction.next-1;
+//		FIFO[tail]=newinsInstruction.page;
+//		System.out.println("当前是"+newinsInstruction.page+"页");
+//		jp.setText("当前是"+newinsInstruction.page+"页"+"\n");
+//		Logicmemory temp=new Logicmemory();
+//		temp=mmlist.get(0);
+//		temp.nowpage=FIFO[tail];
+//    	Memory jh=(Memory) frame.bgjp.getComponent(4);
+//    	jh.color=0;
+//    	frame.repaint();
+//	//	frame.bgjp.getComponent(0).getGraphics();
+//		tail++;
 		//重置下一次操作为check
 		condition=check;
 		//
