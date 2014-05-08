@@ -1,14 +1,9 @@
 package com.main;
 
 
-import java.awt.Color;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextPane;
 import javax.swing.Timer;
 
 
@@ -25,16 +20,18 @@ public class main {
 	
 	public static void main(String[] args) {
 		Disk disk=new Disk();
+
 		MyJFrame frame=new MyJFrame();
-		
-		
+			
 		for(int i=1;i<=4;i++){
 			Logicmemory lm=new Logicmemory();
 			Memory mem=new Memory("µÚ"+i+"¿é", i);
 			frame.bgjp.add(mem);
 			mmlist.add(lm);
 		}
-		ActionListener timelistener = new controller(disk,mmlist);
+		
+		
+		ActionListener timelistener = new controller(disk,mmlist,frame);
 		timer = new Timer(1500, timelistener);
 		timer.start();
 		frame.setVisible(true);
