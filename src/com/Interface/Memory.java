@@ -24,7 +24,7 @@ public class Memory extends JPanel {
 		if(color==1){
 		g.setColor(Color.YELLOW);
 		}else{
-			g.setColor(Color.blue);
+			g.setColor(Color.red);
 		}
 		g.fillRect(0, 0, 100, 100);
 		g.setColor(Color.BLACK);

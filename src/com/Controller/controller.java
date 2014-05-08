@@ -1,6 +1,7 @@
 package com.Controller;
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -31,12 +32,14 @@ public class controller implements ActionListener {
 	static final int change_in=1;
 	static final int change_out=2;
 	private Logicmemory temp=new Logicmemory();
+	private MyJFrame frame;
 
 
 	public controller(Disk disk,ArrayList<Logicmemory> mmlist, MyJFrame frame) {
 		this.disk=disk;
 		this.mmlist=mmlist;
 		this.jp=frame.jp;
+		this.frame=frame;
 
 		
 		
@@ -78,7 +81,7 @@ public class controller implements ActionListener {
 				temp.nowpage=0;
 				jp.setText(jp.getText()+"第"+i+"块"+"换出"+FIFO[head]+"页"+"\n");
 				System.out.println("第"+i+"块"+"换出"+FIFO[head]+"页");
-			
+				
 				head++;
 			}
 		
@@ -106,17 +109,22 @@ public class controller implements ActionListener {
 		jp.setText(jp.getText()+"当前是"+newinsInstruction.order+"号"+newinsInstruction.page+"页"+"\n");
 		System.out.println("当前是"+newinsInstruction.order+"号"+newinsInstruction.page+"页");
 		if((!findpage(newinsInstruction.page))){
-			FIFO[tail]=newinsInstruction.page;				
+			FIFO[tail]=newinsInstruction.page;		 		
 			tail++;
 			if(tail-head<4){
 				//如果没满，就直接放到空地
 				
 				int emptyplace;
 				emptyplace=findplace();
-				temp=mmlist.get(emptyplace);
+				temp=mmlist.get(emptyplace-1);
 				temp.nowpage=FIFO[tail-1];
+				
 				System.out.println("第"+emptyplace+"块调入"+temp.nowpage+"页");
 				jp.setText(jp.getText()+"第"+emptyplace+"块调入"+temp.nowpage+"页"+"\n");
+				Memory mm=(Memory) frame.bgjp.getComponent(emptyplace+3);
+				mm.color=0;
+				frame.repaint();
+				
 				condition=check;
 			}else{
 				condition=change_out;			

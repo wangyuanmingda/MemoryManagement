@@ -3,10 +3,14 @@ package com.Interface;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -31,11 +35,32 @@ public class MyJFrame extends JFrame {
 
 		setTitle("内存管理");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(300, 200, 800, 400);
+		setBounds(300, 200, 800, 350);
 		setLayout(null);
 		bgjp=(JPanel) getContentPane();
 		bgjp.setBounds(0, 0, 800, 400);
 		bgjp.setLayout(null);
+		
+		
+		//多选框
+		final JComboBox dbtype = new JComboBox();
+		dbtype.addItem("南京");
+		dbtype.addItem("苏州");
+		dbtype.addItem("南通");
+		dbtype.setSelectedItem("南京");//默认选中南京
+		dbtype.addItemListener(new ItemListener(){
+		public void itemStateChanged(ItemEvent evt) {
+		if(evt.getStateChange() == ItemEvent.SELECTED){
+		 try{
+		    
+		 }catch (Exception e){
+		      
+		   }
+		 } 
+		}		   
+		  });
+		add(dbtype);
+		dbtype.setBounds(610, 30, 70, 30);
 		
 		//输出框
 		  jp = new JTextPane();
@@ -44,21 +69,29 @@ public class MyJFrame extends JFrame {
 		//  jp.setText(jp.getText()+"\n"+jp.getText());
 
 		  JScrollPane scrollPane = new JScrollPane(jp);
-		  scrollPane.setBounds(550, 100, 200, 200);
+		  scrollPane.setBounds(550, 70, 200, 200);
 		bgjp.add(scrollPane);
 		
 		
 		
-		but_confirm=new JButton("开始");
+		but_confirm=new JButton("开始");	
 		but_confirm.addActionListener(new ActionListener() {
-			// 事件处理
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			// 获得容器，设置容器背景颜色
 				timer.start();
 			}
 			});
+		
+		
+		
 		but_stop=new JButton("暂停");
+		but_stop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				timer.stop();
+				System.out.println("进去了");
+			}
+			});
 		but_reset=new JButton("复位");
 		add(but_confirm);
 		add(but_stop);
