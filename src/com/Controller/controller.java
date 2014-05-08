@@ -23,20 +23,41 @@ public class controller implements ActionListener {
 	static final int check=0;
 	static final int change_in=1;
 	static final int change_out=2;
+	private static final int free=0;
 	
+
 	private int timer=0;
 	private int lostcount=0;
 	private JTextPane jp;	
 	private Instruction newinsInstruction=new Instruction();
 	private Disk disk;
 	private ArrayList<Logicmemory> mmlist=new ArrayList<>();
-	private int head=0,tail=0;
+
 	private int[] FIFO=new int[400];
 	private int condition;
 	private Logicmemory temp=new Logicmemory();
 	private MyJFrame frame;
 
 	public int next=0;
+	public int pattern=0;
+	public int head=0,tail=0;
+	
+	public void init() {
+		head=0;
+		tail=0;
+		next=0;
+		condition=0;
+		timer=0;
+		lostcount=0;
+		for(int i=0;i<mmlist.size();i++){
+			Logicmemory temp=new Logicmemory();
+			temp=mmlist.get(i);
+			temp.nowpage=free;
+			Memory mm=(Memory)frame.bgjp.getComponent(6+i);
+			mm.color=1;
+			
+		}
+	}
 
 	public controller(Disk disk,ArrayList<Logicmemory> mmlist, MyJFrame frame) {
 		this.disk=disk;
@@ -87,7 +108,7 @@ public class controller implements ActionListener {
 				System.out.println("第"+kuai+"块"+"换出"+FIFO[head]+"页");
 				
 				head++;
-				Memory mm=(Memory) frame.bgjp.getComponent(kuai+4);
+				Memory mm=(Memory) frame.bgjp.getComponent(kuai+5);
 				mm.color=1;
 				frame.repaint();
 				return;
@@ -106,14 +127,17 @@ public class controller implements ActionListener {
 		}
 		return -1;
 	}
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	
+	private void FIFO() {
+
 		//默认第一条指令是开始指令，先算当前情况
 		timer++;
 		if(timer==361){
 			frame.timer.stop();
 			jp.setText(jp.getText()+"缺页数"+lostcount+"\n");
 			System.out.println("缺页数"+lostcount);
+			condition=check;
+			return;
 		}
 		switch(condition)
 		{
@@ -136,7 +160,7 @@ public class controller implements ActionListener {
 				
 				System.out.println("第"+emptyplace+"块调入"+temp.nowpage+"页");
 				jp.setText(jp.getText()+"第"+emptyplace+"块调入"+temp.nowpage+"页"+"\n");
-				Memory mm=(Memory) frame.bgjp.getComponent(emptyplace+4);
+				Memory mm=(Memory) frame.bgjp.getComponent(emptyplace+5);
 				mm.color=0;
 				lostcount++;
 				frame.repaint();
@@ -160,7 +184,7 @@ public class controller implements ActionListener {
 			temp.nowpage=FIFO[tail-1];
 			jp.setText(jp.getText()+"第"+emptyplace+"块调入"+temp.nowpage+"页"+"\n");
 			System.out.println("第"+emptyplace+"块调入"+temp.nowpage+"页");
-			Memory mm=(Memory) frame.bgjp.getComponent(emptyplace+4);
+			Memory mm=(Memory) frame.bgjp.getComponent(emptyplace+5);
 			mm.color=0;
 			lostcount++;
 			frame.repaint();
@@ -174,6 +198,21 @@ public class controller implements ActionListener {
 		}
 		}
 		
-	}       
 
+	}
+	
+	private void LRU() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0){   
+		if(pattern==0){
+			FIFO();
+		}else{
+			LRU();
+		}
+}
 }

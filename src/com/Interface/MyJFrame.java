@@ -21,7 +21,7 @@ import com.Controller.controller;
 
 public class MyJFrame extends JFrame {
 
-	private static final int free=0;
+
 	public JPanel bgjp;
 	public JTextPane jp;
 	public JButton but_confirm;
@@ -29,8 +29,10 @@ public class MyJFrame extends JFrame {
 	public JButton but_reset;
 	public Disk disk;	
 	public Timer timer;
+	public int interval=1500;
 	
 	private controller timelistener;
+
 	private static  ArrayList<Logicmemory> mmlist=new ArrayList<>();
 	
 	public MyJFrame(Disk disk) {
@@ -63,6 +65,30 @@ public class MyJFrame extends JFrame {
 		add(dbtype);
 		dbtype.setBounds(610, 30, 80, 30);
 		
+		//多选框 速度
+		final JComboBox speed = new JComboBox();
+		speed.addItem("Normal");
+		speed.addItem("Fast");
+		speed.setSelectedItem("Normal");//默认选中南京
+		speed.addItemListener(new ItemListener(){
+		public void itemStateChanged(ItemEvent evt) {
+		if(evt.getStateChange() == ItemEvent.SELECTED){
+			if(speed.getSelectedItem().toString()=="Normal"){
+				interval=1500;
+				System.out.println("选择1500");
+			}else{
+				interval=20;
+				System.out.println("选择20");
+					}	 
+			}
+		  }
+		 });
+		add(speed);
+		speed.setBounds(500, 30, 80, 30);
+		
+		
+		
+		
 		//输出框
 		  jp = new JTextPane();
 		  jp.setBackground(Color.WHITE);
@@ -79,6 +105,7 @@ public class MyJFrame extends JFrame {
 		but_confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				timer = new Timer(interval, timelistener);
 				timer.start();
 			}
 			});
@@ -99,19 +126,10 @@ public class MyJFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//需要复位的，next,memory，logicmm
 				timer.stop();
-				timelistener.next=0;
-				for(int i=0;i<mmlist.size();i++){
-					Logicmemory temp=new Logicmemory();
-					temp=mmlist.get(i);
-					temp.nowpage=free;
-					Memory mm=(Memory)bgjp.getComponent(5+i);
-					mm.color=1;
-
-				}
+				timelistener.init();
 				repaint();
 			}
 			});
-		
 		
 		add(but_confirm);
 		add(but_stop);
@@ -129,6 +147,6 @@ public class MyJFrame extends JFrame {
 		}
 		
 		timelistener = new controller(disk,mmlist,this);
-		timer = new Timer(1500, timelistener);
+		
 	}
 }
