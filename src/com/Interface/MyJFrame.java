@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -21,14 +20,18 @@ import com.Class.Logicmemory;
 import com.Controller.controller;
 
 public class MyJFrame extends JFrame {
-	private static  ArrayList<Logicmemory> mmlist=new ArrayList<>();
+
+	private static final int free=0;
 	public JPanel bgjp;
 	public  JTextPane jp;
 	public JButton but_confirm;
 	public JButton but_stop;
 	public JButton but_reset;
 	public Disk disk;
+	
 	private Timer timer;
+	private controller timelistener;
+	private static  ArrayList<Logicmemory> mmlist=new ArrayList<>();
 	
 	public MyJFrame(Disk disk) {
 		this.disk=disk;
@@ -41,13 +44,11 @@ public class MyJFrame extends JFrame {
 		bgjp.setBounds(0, 0, 800, 400);
 		bgjp.setLayout(null);
 		
-		
 		//多选框
 		final JComboBox dbtype = new JComboBox();
-		dbtype.addItem("南京");
-		dbtype.addItem("苏州");
-		dbtype.addItem("南通");
-		dbtype.setSelectedItem("南京");//默认选中南京
+		dbtype.addItem("FIFO算法");
+		dbtype.addItem("LRU算法");
+		dbtype.setSelectedItem("FIFO算法");//默认选中南京
 		dbtype.addItemListener(new ItemListener(){
 		public void itemStateChanged(ItemEvent evt) {
 		if(evt.getStateChange() == ItemEvent.SELECTED){
@@ -60,7 +61,7 @@ public class MyJFrame extends JFrame {
 		}		   
 		  });
 		add(dbtype);
-		dbtype.setBounds(610, 30, 70, 30);
+		dbtype.setBounds(610, 30, 80, 30);
 		
 		//输出框
 		  jp = new JTextPane();
@@ -93,6 +94,25 @@ public class MyJFrame extends JFrame {
 			}
 			});
 		but_reset=new JButton("复位");
+		but_reset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//需要复位的，next,memory，logicmm
+				timer.stop();
+				timelistener.next=0;
+				for(int i=0;i<mmlist.size();i++){
+					Logicmemory temp=new Logicmemory();
+					temp=mmlist.get(i);
+					temp.nowpage=free;
+					Memory mm=(Memory)bgjp.getComponent(5+i);
+					mm.color=1;
+
+				}
+				repaint();
+			}
+			});
+		
+		
 		add(but_confirm);
 		add(but_stop);
 		add(but_reset);
@@ -108,7 +128,7 @@ public class MyJFrame extends JFrame {
 			mmlist.add(lm);
 		}
 		
-		ActionListener timelistener = new controller(disk,mmlist,this);
+		timelistener = new controller(disk,mmlist,this);
 		timer = new Timer(1500, timelistener);
 	}
 }

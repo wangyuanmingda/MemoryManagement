@@ -19,21 +19,22 @@ import com.Interface.Memory;
 
 //用Timer应该更好控制时间1.5s跑一跳指令 
 public class controller implements ActionListener {
-	private  JTextPane jp;
 	
+	static final int check=0;
+	static final int change_in=1;
+	static final int change_out=2;
+	
+	private  JTextPane jp;	
 	private Instruction newinsInstruction=new Instruction();
 	private Disk disk;
 	private ArrayList<Logicmemory> mmlist=new ArrayList<>();
 	private int head=0,tail=0;
-	private int next=0;
 	private int[] FIFO=new int[400];
 	private int condition;
-	static final int check=0;
-	static final int change_in=1;
-	static final int change_out=2;
 	private Logicmemory temp=new Logicmemory();
 	private MyJFrame frame;
 
+	public int next=0;
 
 	public controller(Disk disk,ArrayList<Logicmemory> mmlist, MyJFrame frame) {
 		this.disk=disk;
@@ -121,7 +122,7 @@ public class controller implements ActionListener {
 				
 				System.out.println("第"+emptyplace+"块调入"+temp.nowpage+"页");
 				jp.setText(jp.getText()+"第"+emptyplace+"块调入"+temp.nowpage+"页"+"\n");
-				Memory mm=(Memory) frame.bgjp.getComponent(emptyplace+3);
+				Memory mm=(Memory) frame.bgjp.getComponent(emptyplace+4);
 				mm.color=0;
 				frame.repaint();
 				
