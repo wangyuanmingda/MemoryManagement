@@ -19,15 +19,12 @@ public class Disk {
 
 		while((s = input.readLine())!=null){ //判断是否读到了最后一行
 		String info[] = s.split(" ");
-		count++;
-		if(count==11){
-			count=1;
-			page++;
-		}
+		page=Integer.parseInt(info[1])/11;
+		page++;
 		Instruction newinstruction=new Instruction(info[0],info[1],page);
 
 		list.add(newinstruction);
-		System.out.println("order："+info[0]+"  next："+info[1]);
+		System.out.println("order："+info[0]+"  ins："+info[1] +" page:"+page);
 		
 		}
 		input.close(); 

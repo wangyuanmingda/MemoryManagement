@@ -21,7 +21,7 @@ import com.Controller.controller;
 
 public class MyJFrame extends JFrame {
 
-
+	public int pattern=0;
 	public JPanel bgjp;
 	public JTextPane jp;
 	public JButton but_confirm;
@@ -54,12 +54,14 @@ public class MyJFrame extends JFrame {
 		dbtype.addItemListener(new ItemListener(){
 		public void itemStateChanged(ItemEvent evt) {
 		if(evt.getStateChange() == ItemEvent.SELECTED){
-		 try{
-		    
-		 }catch (Exception e){
-		      
-		   }
-		 } 
+			if(dbtype.getSelectedItem().toString()=="FIFO算法"){
+				timelistener.pattern=0;
+				System.out.println("FIFO算法");
+			}else{
+				timelistener.pattern=1;
+				System.out.println("LRU算法");
+					}	 
+			} 
 		}		   
 		  });
 		add(dbtype);
@@ -105,6 +107,7 @@ public class MyJFrame extends JFrame {
 		but_confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				but_confirm.setText("开始");
 				timer = new Timer(interval, timelistener);
 				timer.start();
 			}
@@ -116,6 +119,7 @@ public class MyJFrame extends JFrame {
 		but_stop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				but_confirm.setText("继续");
 				timer.stop();
 				System.out.println("进去了");
 			}
@@ -125,6 +129,7 @@ public class MyJFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//需要复位的，next,memory，logicmm
+				but_confirm.setText("开始");
 				timer.stop();
 				timelistener.init();
 				repaint();
